@@ -24,11 +24,21 @@
     <div id="settingModal" class="custom-modal">
         <div class="modal-header">
             <div class="left-icon" onclick="toggleSettingMenu()">✕</div>
-            <div class="modal-title">Settings</div>
+            <div id="ui-settings-title" class="modal-title">Settings</div>
             <div></div>
         </div>
-        <div class="modal-body" style="overflow-y: auto; max-height: 60vh;">
-            <p style="font-weight: 700; margin-bottom: 10px;">Language</p>
+        <div class="modal-body" style="overflow-y: auto; max-height: 70vh;">
+            
+            <p style="font-weight: 700; margin-bottom: 12px;" id="ui-edit-profile">Edit Profile</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; padding: 15px; background: #f8f8f8; border-radius: 8px;">
+                <input type="text" id="edit-photo" class="input-user" placeholder="Photo URL" oninput="updateProfileLive()">
+                <input type="text" id="edit-name" class="input-user" placeholder="Username" oninput="updateProfileLive()">
+                <input type="number" id="edit-coin" class="input-user" placeholder="Balance Coins" oninput="updateProfileLive()">
+                <input type="text" id="edit-reward-val" class="input-user" placeholder="Reward Value (e.g. 0.08)" oninput="updateProfileLive()">
+                <input type="number" id="edit-reward-coin" class="input-user" placeholder="Reward Coins in ()" oninput="updateProfileLive()">
+            </div>
+
+            <p style="font-weight: 700; margin-bottom: 10px;" id="ui-lang-label">Language</p>
             <div class="pay-list" style="margin-bottom: 20px;">
                 <div class="pay-item active" onclick="changeLang('id', this)">Indonesia</div>
                 <div class="pay-item" onclick="changeLang('en', this)">English</div>
@@ -36,7 +46,8 @@
                 <div class="pay-item" onclick="changeLang('cn', this)">中文 (China)</div>
                 <div class="pay-item" onclick="changeLang('au', this)">Australia</div>
             </div>
-            <p style="font-weight: 700; margin-bottom: 10px;">Currency</p>
+
+            <p style="font-weight: 700; margin-bottom: 10px;" id="ui-curr-label">Currency</p>
             <div class="pay-list">
                 <div class="pay-item active" onclick="changeCurr('IDR', 1, 'Rp', this)">IDR - Rupiah</div>
                 <div class="pay-item" onclick="changeCurr('USD', 0.000064, '$', this)">USD - US Dollar</div>
@@ -51,12 +62,12 @@
     <div class="container">
         <div class="card card-profile">
             <div class="profile-left">
-                <img id="profile" src="https://www.tiktok.com/favicon.ico" >
+                <img id="my-profile-img" src="https://www.tiktok.com/favicon.ico" >
                 <div class="profile-info">
-                    <div id="nama-saya" >cukieeemay</div>
+                    <div id="my-profile-name" style="font-weight: 700;">cukieeemay</div>
                     <div class="coin-row">
                         <img src="img/coin.png">
-                        <span>165</span>
+                        <span id="my-profile-coin">165</span>
                     </div>
                 </div>
             </div>
@@ -66,7 +77,9 @@
                     Exchange for Coins 
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
-                <div class="content-rewards">Content rewards: $0.08(<img src="img/coin.png" style="width:16px;"> 7)</div>
+                <div class="content-rewards">
+                    <span id="ui-rewards-label">Content rewards:</span>&nbsp;$<span id="my-profile-reward-val">0.08</span>&nbsp;(<img src="img/coin.png" style="width:14px; margin-bottom: -2px;">&nbsp;<span id="my-profile-reward-coin">7</span>)
+                </div>
             </div>
         </div>
 
@@ -87,8 +100,8 @@
 
         <div class="card">
             <div class="title">
-                <b id="ui-recharge-title" style="color: #161823; font-size: 16px; font-weight: 600;">Recharge</b> 
-                <span id="ui-promo" style="color: #ff2c55; font-size: 14px; font-weight: 500;">Save around 25% with a lower third-party service fee.</span>
+                <b id="ui-recharge-title" style="color: #161823; font-weight: 600;">Recharge</b> 
+                <span id="ui-promo" style="color: #ff2c55; font-weight: 400;">Save around 25% with a lower third-party service fee.</span>
             </div>
             <div class="grid">
                 <div class="coinmen" onclick="selectItem(this, 8000)">
@@ -112,7 +125,7 @@
                     <div class="price">Rp 299.000</div>
                 </div>
                 <div class="coinmen" onclick="selectItem(this, 0, true)">
-                    <div class="coinitm"><img src="img/coin.png"> Custom</div>
+                    <div class="coinitm"><img src="img/coin.png">Custom</div>
                     <div class="pricet"></div>
                 </div>
             </div>
@@ -182,7 +195,6 @@
     </div>
 </div>
 
-
 <div id="summaryOverlay" class="overlay" onclick="closeSummary()"></div>
 <div id="summaryModal" class="custom-modal">
     <div class="modal-header">
@@ -192,12 +204,12 @@
     </div>
     <div class="modal-body">
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <div style="color: #8a8b91; font-weight: 600; font-size: 15px;" id="ui-acc-label">Account</div>
-            <div id="summaryUsername" style="font-weight: 600; font-size: 15px;">@username</div>
+            <div style="color: #8a8b91; font-weight: 500; font-size: 15px;" id="ui-acc-label">Account</div>
+            <div id="summaryUsername" style="font-weight: 500; font-size: 15px;">@username</div>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
-            <div style="font-weight: 700; font-size: 16px;"><span style="font-weight: 700; font-size: 16px;" id="summaryCoin">0</span> <span style="font-weight: 700; font-size: 16px;" class="ui-coins-text">coins</span></div>
-            <div style="font-weight: 700; font-size: 16px;"><span style="font-weight: 700; font-size: 16px;" class="ui-curr-symbol">IDR</span> <span style="font-weight: 700; font-size: 16px;" id="summaryPrice">0</span></div>
+            <div style="font-weight: 700; font-size: 16px;"><span style="font-weight: 600; font-size: 16px;" id="summaryCoin">0</span> <span style="font-weight: 600; font-size: 16px;" class="ui-coins-text">coins</span></div>
+            <div style="font-weight: 700; font-size: 16px;"><span style="font-weight: 600; font-size: 16px;" class="ui-curr-symbol">IDR</span> <span style="font-weight: 600; font-size: 16px;" id="summaryPrice">0</span></div>
         </div>
         <div style="color: #8a8b91; font-size: 14px; margin-bottom: 15px;" id="ui-select-pay">Select a payment method</div>
         <div class="pay-list">
@@ -212,21 +224,23 @@
                 <img src="https://lf16-co-sg.tiktokcdn-us.com/obj/pipo-sgcompliance/sky/mastercard_light_5865fd.png" style="width: 30px;">
                 <div class="check-icon" style="color: #fe2c55; display: none;">✓</div>
             </div>
+            
             <div class="pay-item" onclick="selectPayment(this)">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" style="width: 30px; height: 20px;">
-                <div class="check-icon" style="color: #fe2c55; display: none;">✓</div>
-            </div>
+                <div class="check-icon" style="color: #fe2c55; display: none;">✓</div> 
+                </div>
+
         </div>
         <p style="color: #8a8b91; font-size: 14px; line-height: 1.4; margin: 20px 0;" id="ui-disclaimer">By tapping Pay to make a purchase, you acknowledge that you are purchasing a limited licence.</p>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <span style="font-weight: 800; font-size: 16px;" id="ui-summary-total-label">Total</span>
-            <span style="font-weight: 800; font-size: 16px;"><span style="font-weight: 800; font-size: 16px;" class="ui-curr-symbol">IDR</span> <span style="font-weight: 800; font-size: 16px;" id="finalTotal">0</span></span>
+            <span style="font-weight: 700; font-size: 16px;" id="ui-summary-total-label">Total</span>
+            <span style="font-weight: 700; font-size: 16px;"><span style="font-weight: 700; font-size: 16px;" class="ui-curr-symbol">IDR</span> <span style="font-weight: 700; font-size: 16px;" id="finalTotal">0</span></span>
         </div>
         <button class="btn-recharge-confirm" onclick="processPay()" style="display: flex; justify-content: center; align-items: center; gap: 4px;">
             <span class="ui-pay-text" style="font-weight: 800; font-size: 16px;">Pay</span> 
             <span style="font-weight: 800; font-size: 16px;">
-                <span style="font-weight: 800; font-size: 16px;" class="ui-curr-symbol">IDR</span> 
-                <span style="font-weight: 800; font-size: 16px;" id="payBtnAmount">0</span>
+                <span class="ui-curr-symbol">IDR</span> 
+                <span id="payBtnAmount">0</span>
             </span>
         </button>
     </div>
@@ -247,9 +261,7 @@
             <span id="successCoinAmount">0</span> <span class="ui-coins-text">Coins</span> were sent to<br>
             <b id="successTargetUser"> @username</b>
         </div>
-        <div class="success-note" id="ui-success-note">
-            This operation has been completed. It will be processed within 24 hours!
-        </div>
+        <div class="success-note" id="ui-success-note">This operation has been completed. It will be processed within 24 hours!</div>
         <button class="btn-goback" onclick="closeSuccessAndReset()" id="ui-goback">Go Back</button>
     </div>
 </div>
@@ -269,12 +281,26 @@
     let timer, selectedCoins = 0, currentPrice = 0, currentCustomVal = "";
 
     const i18n = {
-        id: { header: "Dapatkan Koin", recharge: "Isi Ulang", custom: "Kustom", total: "Total", pay: "Bayar", acc: "Akun", summary: "Ringkasan Pesanan", exchange: "Tukar dengan Koin", promo: "Hemat sekitar 25% dengan biaya layanan pihak ketiga yang lebih rendah.", coins: "koin", loading: "Memproses pembayaran...", success: "Isi Ulang Berhasil", goback: "Kembali", paymethod: "Metode pembayaran", selectpay: "Pilih metode pembayaran", coinlabel: "Jumlah Koin", disclaimer: "Dengan mengetuk Bayar, Anda mengakui bahwa Anda membeli lisensi terbatas.", note: "Operasi ini telah selesai. Akan diproses dalam waktu 24 jam!", reward: "Undang & Dapatkan Hadiah", rewardsub: "Lihat fitur baru ini!" },
-        en: { header: "Get Coins", recharge: "Recharge", custom: "Custom", total: "Total", pay: "Pay", acc: "Account", summary: "Order Summary", exchange: "Exchange for Coins", promo: "Save around 25% with a lower third-party service fee.", coins: "coins", loading: "Processing your payment...", success: "Successful Recharge", goback: "Go Back", paymethod: "Payment method", selectpay: "Select a payment method", coinlabel: "Number of Coins", disclaimer: "By tapping Pay to make a purchase, you acknowledge that you are purchasing a limited licence.", note: "This operation has been completed. It will be processed within 24 hours!", reward: "Invite & Get Rewards", rewardsub: "Check out this new feature!" },
-        jp: { header: "コインを入手", recharge: "チャージ", custom: "カスタム", total: "合計", pay: "支払う", acc: "アカウント", summary: "注文の概要", exchange: "コインと交換", promo: "サードパーティの手数料が低いため、約25％節約できます。", coins: "コイン", loading: "支払い処理中...", success: "チャージ完了", goback: "戻る", paymethod: "支払い方法", selectpay: "支払い方法を選択", coinlabel: "コイン数", disclaimer: "「支払う」をタップすると、仮想アイテムへの限定ライセンスを購入したことになります。", note: "この操作は完了しました。24時間以内に処理されます！", reward: "招待して報酬をゲット", rewardsub: "新機能をチェック！" },
-        cn: { header: "获取硬币", recharge: "充值", custom: "自定义", total: "总额", pay: "支付", acc: "帐户", summary: "订单确认", exchange: "兑换硬币", promo: "使用较低的第三方服务费可节省约25％。", coins: "硬币", loading: "正在处理您的付款...", success: "充值成功", goback: "返回", paymethod: "付款方式", selectpay: "选择付款方式", coinlabel: "硬币数量", disclaimer: "点击支付即表示您承认您购买了访问此虚拟物品的有限许可。", note: "此操作已完成。将在24小时内处理！", reward: "邀请并获得奖励", rewardsub: "查看这个新功能！" },
-        au: { header: "Get Coins", recharge: "Top Up", custom: "Custom", total: "Total", pay: "Pay", acc: "Account", summary: "Order Summary", exchange: "Exchange for Coins", promo: "Save around 25% with a lower third-party service fee.", coins: "coins", loading: "Processing your payment...", success: "Successful Recharge", goback: "Go Back", paymethod: "Payment method", selectpay: "Select a payment method", coinlabel: "Number of Coins", disclaimer: "By tapping Pay to make a purchase, you acknowledge that you are purchasing a limited licence.", note: "This operation has been completed. It will be processed within 24 hours!", reward: "Invite & Get Rewards", rewardsub: "Check out this new feature!" }
+        id: { header: "Dapatkan Koin", recharge: "Isi Ulang", custom: "Kustom", total: "Total", pay: "Bayar", acc: "Akun", summary: "Ringkasan Pesanan", exchange: "Tukar dengan Koin", promo: "Hemat sekitar 25% dengan biaya layanan pihak ketiga yang lebih rendah.", coins: "koin", loading: "Memproses pembayaran...", success: "Isi Ulang Berhasil", goback: "Kembali", paymethod: "Metode pembayaran", selectpay: "Pilih metode pembayaran", coinlabel: "Jumlah Koin", disclaimer: "Dengan mengetuk Bayar, Anda mengakui bahwa Anda membeli lisensi terbatas.", note: "Operasi ini telah selesai. Akan diproses dalam waktu 24 jam!", reward: "Undang & Dapatkan Hadiah", rewardsub: "Lihat fitur baru ini!", editprof: "Edit Profil", setting: "Pengaturan", rewlabel: "Hadiah konten:" },
+        en: { header: "Get Coins", recharge: "Recharge", custom: "Custom", total: "Total", pay: "Pay", acc: "Account", summary: "Order Summary", exchange: "Exchange for Coins", promo: "Save around 25% with a lower third-party service fee.", coins: "coins", loading: "Processing your payment...", success: "Successful Recharge", goback: "Go Back", paymethod: "Payment method", selectpay: "Select a payment method", coinlabel: "Number of Coins", disclaimer: "By tapping Pay to make a purchase, you acknowledge that you are purchasing a limited licence.", note: "This operation has been completed. It will be processed within 24 hours!", reward: "Invite & Get Rewards", rewardsub: "Check out this new feature!", editprof: "Edit Profile", setting: "Settings", rewlabel: "Content rewards:" },
+        jp: { header: "コインを入手", recharge: "チャージ", custom: "カスタム", total: "合計", pay: "支払う", acc: "アカウント", summary: "注文の概要", exchange: "コインと交換", promo: "サードパーティの手数料が低いため、約25％節約できます。", coins: "コイン", loading: "支払い処理中...", success: "チャージ完了", goback: "戻る", paymethod: "支払い方法", selectpay: "支払い方法を選択", coinlabel: "コイン数", disclaimer: "「支払う」をタップすると、仮想アイテムへの限定ライセンスを購入したことになります。", note: "この操作は完了しました。24時間以内に処理されます！", reward: "招待して報酬をゲット", rewardsub: "新機能をチェック！", editprof: "プロフィール編集", setting: "設定", rewlabel: "報酬:" },
+        cn: { header: "获取硬币", recharge: "充值", custom: "自定义", total: "总额", pay: "支付", acc: "帐户", summary: "订单确认", exchange: "兑换硬币", promo: "使用较低的第三方服务费可节省约25％。", coins: "硬币", loading: "正在处理您的付款...", success: "充值成功", goback: "返回", paymethod: "付款方式", selectpay: "选择付款方式", coinlabel: "硬币数量", disclaimer: "点击支付即表示您承认您购买了访问此虚拟物品的有限许可。", note: "此操作已完成。将在24小时内处理！", reward: "邀请并获得奖励", rewardsub: "查看这个新功能！", editprof: "编辑个人资料", setting: "设置", rewlabel: "内容奖励:" },
+        au: { header: "Get Coins", recharge: "Top Up", custom: "Custom", total: "Total", pay: "Pay", acc: "Account", summary: "Order Summary", exchange: "Exchange for Coins", promo: "Save around 25% with a lower third-party service fee.", coins: "coins", loading: "Processing your payment...", success: "Successful Recharge", goback: "Go Back", paymethod: "Payment method", selectpay: "Select a payment method", coinlabel: "Number of Coins", disclaimer: "By tapping Pay to make a purchase, you acknowledge that you are purchasing a limited licence.", note: "This operation has been completed. It will be processed within 24 hours!", reward: "Invite & Get Rewards", rewardsub: "Check out this new feature!", editprof: "Edit Profile", setting: "Settings", rewlabel: "Content rewards:" }
     };
+
+    function updateProfileLive() {
+        const photo = document.getElementById('edit-photo').value;
+        const name = document.getElementById('edit-name').value;
+        const coin = document.getElementById('edit-coin').value;
+        const rewardVal = document.getElementById('edit-reward-val').value;
+        const rewardCoin = document.getElementById('edit-reward-coin').value;
+
+        if(photo) document.getElementById('my-profile-img').src = photo;
+        if(name) document.getElementById('my-profile-name').innerText = name;
+        if(coin) document.getElementById('my-profile-coin').innerText = coin;
+        if(rewardVal) document.getElementById('my-profile-reward-val').innerText = rewardVal;
+        if(rewardCoin) document.getElementById('my-profile-reward-coin').innerText = rewardCoin;
+    }
 
     function changeLang(lang, el) {
         currentLang = lang;
@@ -308,6 +334,9 @@
         document.getElementById('ui-reward-title').innerText = t.reward;
         document.getElementById('ui-reward-sub').innerText = t.rewardsub;
         document.getElementById('ui-goback').innerText = t.goback;
+        document.getElementById('ui-settings-title').innerText = t.setting;
+        document.getElementById('ui-edit-profile').innerText = t.editprof;
+        document.getElementById('ui-rewards-label').innerText = t.rewlabel;
     }
 
     function changeCurr(code, rate, symbol, el) {
