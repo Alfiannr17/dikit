@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Get Coin</string>
+    <string name="title_activity_main">Get Coin</string>
+    <string name="package_name">com.recharge.tt</string>
+    <string name="custom_url_scheme">com.recharge.tt</string>
+</resources>
